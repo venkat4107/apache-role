@@ -1,0 +1,27 @@
+---
+
+  - name: ensure SELinux is permisive
+    selinux:
+      policy: targeted
+      state: permissive
+
+  - name: ensure port is changed
+    template:
+      src: httpd.conf
+      dest: /etc/httpd/conf/httpd.conf
+    notify:    
+    - restart httpd
+
+  - name: ensure date is updated
+    copy:
+      src: date.php
+      dest: /var/www/html/date.php
+
+  - name: ensure PHP is installed
+    package:
+      name: php
+      state: present
+    notify: 
+    - restart httpd
+
+...
